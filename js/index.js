@@ -5,7 +5,9 @@ let plateaCyL=4000;
 let pullmanLateral=3500;
 let cabecera=3000;
 let iva=0.21;
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                  CLASES Y OBJETOS                                                      //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Persona{
     constructor(name,numero){
         this.nombre= name;
@@ -76,13 +78,13 @@ class compraTicket{
         let people=new Persona();
         let texto="Se ha generado una compra por "+this.personas.length+" Tickects, que corresponden a: ";
         for (people of this.personas){
-            texto=texto+"Nombre: "+people.nombre+"\n DNI: "+people.dni+"\n"+this.precioSector+" +IVA \n\n";
+            texto=texto+people.mostrarse() +"\n"+this.precioSector+" +IVA \n\n";
         }
         texto=texto + "\n\n Subtotal sin Iva"+this.subtotal+"\n\n TOTAL DE LA COMPRA: "+this.total;
         return (texto);
         }
     }
-// FUNCIONES  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FUNCIONES QUE USA EL PROGRAMA PRINCIPAL/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function validarSector(){
     let control=0;
     let lugar=0;
@@ -125,9 +127,7 @@ let cantEntradas=validarCantEntradas();
 
 if (cantEntradas===1){
     compra.calcularCosto();
-    alert(compra.subtotal)
     compra.calcularCostoConIva();
-    alert(compra.total);
     alert(compra.mostrarCompra())
 }else{
     for(let i=1;i<cantEntradas;i++){
