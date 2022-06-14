@@ -6,95 +6,140 @@ let pullmanLateral=3500;
 let cabecera=3000;
 let iva=0.21;
 
-function elegirSector(){
-    let lugar=1
-    while(typeof(lugar)==="number"){
+class Persona{
+    constructor(name,numero){
+        this.nombre= name;
+        this.dni=numero;
+    }
+    mostrarse(){
+        return ("Nombre: "+this.nombre+ " DNI: "+this.dni);
+    }
+}
+class compraTicket{
+    constructor(){
+        this.personas=[];
+        this.sector="";
+        this.precioSector=0;
+        this.subtotal=0;
+        this.total=0;
+        
+    }
+    agregarPersona(persona){
+        this.personas.push(persona);
+    }
+    calcularCosto(){
+        this.subtotal= this.precioSector*(this.personas.length)
+
+    }
+    calcularCostoConIva(){
+        this.total=this.subtotal*iva+this.subtotal        
+    }
+    elegirSector(zona){
+        switch (zona){
+            case 1:{
+                this.sector= "Platea Preferida";
+                this.precioSector=plateaPreferida;
+                break;
+            }               
+            case 2:{
+                this.sector= "Platea";
+                this.precioSector=platea;
+                break;
+            }               
+           case 3:{
+                this.sector= "Super Pullman";
+                this.precioSector=superPulman;
+                break;
+            }               
+            case 4:{
+                this.sector= "Platea C y L";
+                this.precioSector=plateaCyL;
+                break;
+            }                
+            case 5:{
+                this.sector= "Pullman Lateral";
+                this.precioSector=pullmanLateral;
+                break;
+            }
+            case 6:{
+                this.sector= "Cabecera";
+                this.precioSector=cabecera;
+                break;
+            }
+            default:
+                break;   
+        }
+       
+    }
+    
+    mostrarCompra(){
+        let people=new Persona();
+        let texto="Se ha generado una compra por "+this.personas.length+" Tickects, que corresponden a: ";
+        for (people of this.personas){
+            texto=texto+"Nombre: "+people.nombre+"\n DNI: "+people.dni+"\n"+this.precioSector+" +IVA \n\n";
+        }
+        texto=texto + "\n\n Subtotal sin Iva"+this.subtotal+"\n\n TOTAL DE LA COMPRA: "+this.total;
+        return (texto);
+        }
+    }
+// FUNCIONES  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function validarSector(){
+    let control=0;
+    let lugar=0;
+       while(typeof(control)==="number"){
         lugar=parseInt(prompt("Ingrese el numero del sector que desea:\n 1- Platea Preferida ($"+plateaPreferida+" + IVA) \n 2- Platea ($"+platea+" + IVA) \n 3- Super Pullman($"+superPulman+" + IVA) \n 4- Platea C y L ($"+plateaCyL+" + IVA) \n 5- Pullman Lateral ($"+pullmanLateral+" + IVA) \n 6- Cabecera ($"+cabecera+" + IVA)"));
         if ((typeof(lugar)==="number")&&(lugar>0&&lugar<7)){
-            switch (lugar){
-                case 1:
-                    return "Platea Preferida";
-                case 2:
-                    return "Platea";
-                case 3:
-                    return "Super Pullman";
-                case 4:
-                    return "Platea C y L";
-                case 5:
-                    return "Pullman Lateral";
-                case 6:
-                    return "Cabecera";
-                default:
-                    return null;
-            }
+           return lugar;
         }else{
             alert ("ERROR!!! Opcion incorrecta!! vuelva a ingresar una opcion");
-            lugar=0;
+            control=0;
         }
-    }
+        }
     return;
 }
-function calcularCosto(){
-    while (cantEntradas==0){
-        cantEntradas= parseInt(prompt("Ingrese cantidad de entradas que desea comprar"));
-        if ((typeof(cantEntradas)==="number")&&(cantEntradas>0)){
-            switch (sector){
-                case "Platea Preferida":
-                    precioEntrada=plateaPreferida;
-                    return plateaPreferida*cantEntradas;
-                case "Platea":
-                    precioEntrada=platea
-                    return platea*cantEntradas;
-                case "Super Pullman":
-                    precioEntrada=superPulman
-                    return superPulman*cantEntradas;
-                case "Platea C y L":
-                    precioEntrada=plateaCyL
-                    return plateaCyL*cantEntradas;
-                case "Pullman Lateral":
-                    precioEntrada=pullmanLateral
-                    return pullmanLateral*cantEntradas;
-                case "Cabecera":
-                    precioEntrada=cabecera
-                    return cabecera*cantEntradas;
-                default:
-                    return null;
-            }
+function validarCantEntradas(){
+    let control=0;
+    let cantidad=parseInt(prompt("Ingrese la cantidad de entradas que desea comprar: "));
+    while(typeof(control)==="number"){
+        if ((typeof(cantidad)==="number")&&(cantidad>0)){
+           return cantidad;
         }else{
-            alert ("ERROR AL INGRESAR LA CANTIDAD DE ENTRADAS!!! Por vavor ingrese un numero correcto")
-            cantEntradas=0;
+            alert("ERROR!!! Opcion incorrecta!! ")
+            cantidad=parseInt(prompt("Vuelva a ingresar una cantidad de entradas a comprar: "));
         }
     }
-    return;
-    
 }
-function listarPersonas(){
-    let personas= "1- Nombre: "+prompt("Ingrese su nombre y apellido:");
-    personas = personas +" DNI: "+ prompt ("Ingrese su DNI: ");
-    
-    if (cantEntradas==1){
-        personas= personas + "\n"+ precioEntrada+" +IVA\n"
-        return personas; 
-    }else{
-        personas=personas+" - (entrada dominante)\n";
-        personas= personas + precioEntrada+" +IVA\n\n"
-        for(let i=2;i<=cantEntradas;i++){
-            personas= personas +i+"- Nombre: " + prompt("Ingrese nombre y apellido de la siguiente persona que lo acompañará: ");
-            personas = personas +" DNI: "+ prompt ("Ingrese el DNI: ")+" \n";
-            personas= personas + precioEntrada+" +IVA\n\n"
-        }
-            
-    }
-    return personas;
-}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//PROGRAMA PRINCIPAL--------------------------------------------------------------------------------------------------------------------------------------
 
 alert("Bienvenido a EntradasAlan.com");
 alert("Comencemos con el proceso de reserva de entradas");
-let sector=elegirSector()
-let cantEntradas=0;
-let precioEntrada=0;
-let costoEntradas=calcularCosto();
-let totalPagar=costoEntradas*iva+costoEntradas;
-let listaPersonas= listarPersonas();
-alert ("Se han generado "+cantEntradas+" entradas "+sector+"  con los siguientes datos: \n\n\n"+listaPersonas+"\n\n TOTAL A PAGAR: $"+totalPagar+"\n\n Por favor  contar con DNI en mano para ingresar el evento");
+let individuo= new Persona();
+individuo.nombre=prompt("Ingrese su nombre y apellido: ");
+individuo.dni=prompt("ingrese su numero de DNI: ");
+let sector=(validarSector())
+let compra= new compraTicket(individuo);
+compra.agregarPersona(individuo);
+compra.elegirSector(sector);
+let cantEntradas=validarCantEntradas();
+
+if (cantEntradas===1){
+    compra.calcularCosto();
+    alert(compra.subtotal)
+    compra.calcularCostoConIva();
+    alert(compra.total);
+    alert(compra.mostrarCompra())
+}else{
+    for(let i=1;i<cantEntradas;i++){
+        let personita= new Persona()
+        personita.nombre=prompt("Ingrese el nombre de la siguiente persona que lo acompañará: ");
+        personita.dni=prompt("Ingrese el DNI de esa persona:");
+        compra.agregarPersona(personita);
+        
+    }
+    compra.calcularCosto();
+    compra.calcularCostoConIva();
+    alert(compra.mostrarCompra());
+}
+
+
